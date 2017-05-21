@@ -1,0 +1,17 @@
+{
+	"name": "wmxzDSP",
+	"frameworks": "Arduino",
+	"platforms": "Teensy",
+	"keywords": "arm, Filter, Convolution",
+	"description": "WMXZ DSP Library",
+	"version": "1.0.0",
+	"authors":
+	{	"name": "Walter Zimmer",
+		"maintainer": true
+	},
+	"repository":
+	{	"type": "git",
+		"url": "https://github.com/wmxz-eu/wmxzDSP.git"
+	},
+    "examples": "examples/*/*.ino"
+}
