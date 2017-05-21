@@ -1,9 +1,9 @@
 # wmxzDSP
 Keep here routines that are extracted from CMSIS V5
 
-Examples are
+## Examples are
 
-## FilterTest: 
+### FilterTest: 
 tests the use FFT based filter using Kaiser FIR
-## PartConv:
+### PartConv:
 implements uniform partitiond Convolution
