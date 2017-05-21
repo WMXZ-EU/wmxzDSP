@@ -98,7 +98,7 @@ void C_CONV::exec_upos(float *yy, float *xx)
     for(jj=0; jj<NF; jj++)
     {
       // multiply with filter
-      zp = &zz[((nn+jj)%NN)*NN];
+      zp = &zz[((nn-jj+NN)%NN)*NN];
       bp = &bb[jj*NN];
       arm_cmplx_mult_cmplx_f32(zp, bp, vv, NN/2);
       // accumulate previous filtered spectra
