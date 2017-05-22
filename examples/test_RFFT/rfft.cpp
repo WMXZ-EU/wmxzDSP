@@ -109,7 +109,8 @@ const arm_cfft_instance_q15 arm_cfft_sR_q15_len256 = {
   256, twiddleCoef_256_q15, armBitRevIndexTable_fixed_256, ARMBITREVINDEXTABLE_FIXED__256_TABLE_LENGTH
 };
 */
-
+#include "arduino.h"
+#include "usb_serial.h"
 void c_rfft::init(void)
 {
   S_arm_cfft_q15 = (arm_cfft_instance_q15 *) &arm_cfft_sR_q15_len256;
@@ -149,58 +150,89 @@ void c_rfft::exec_256(short *xx, short *yy)
 	nn=256; //have a 256 point complex FFT
 	arm_cfft_q15(S_arm_cfft_q15, xx,0,1);
 	
-	
-	yy[0]=- xx[0];
-	yy[2]=- xx[1];
+	yy[0]=- xx[0]; yy[1]=0;
+	yy[2]=- xx[1]; yy[3]=0;
 
-	int *rna=(int*) &xx[2];
-	int *rma=(int*) &xx[2*nn-2];
-	int *rr1 = (int*)&yy[4];
-	int *rr2 = (int*)&yy[4+2];
+	int *rna=(int*) &xx[2];       // points to first non-dc frequency pair (re + im)
+	int *rma=(int*) &xx[2*nn-2];  // points to last frequency pair (re + im)
+	int *rr1 = (int*)&yy[4];      // points to first non-dc frequency pair chan 1
+	int *rr2 = (int*)&yy[4+2];    // points to first non-dc frequency pair chan 2
 
-	for(int ii=1; ii<nn/2-1;ii+=4)
-	{ 	int rn,rm,rm1;
+	for(int ii=1; ii<nn/2-3; ii+=4) // there are nn/2 frequencies
+	{ int rn,rm,rm1;
 		//
-		rn = - *rna;
-		rm = - *rma;
+		rn = *rna;
+		rm = *rma;
 		rm1=__ROR(rm,16);
-		*rr1=__SHSAX(rn,rm1);
-		*rr2=__SHSAX(rm1,rn);
+		*rr1= - __SHSAX(rn,rm1);
+		*rr2= - __SHSAX(rm1,rn);
 		rna++;
 		rma--;
 		rr1+=2;
 		rr2+=2;
 		//
-		rn = - *rna;
-		rm = - *rma;
+		rn = *rna;
+		rm = *rma;
 		rm1=__ROR(rm,16);
-		*rr1=__SHSAX(rn,rm1);
-		*rr2=__SHSAX(rm1,rn);
+		*rr1= - __SHSAX(rn,rm1);
+		*rr2= - __SHSAX(rm1,rn);
 		rna++;
 		rma--;
 		rr1+=2;
 		rr2+=2;
 		//
-		rn = - *rna;
-		rm = - *rma;
+		rn = *rna;
+		rm = *rma;
 		rm1=__ROR(rm,16);
-		*rr1=__SHSAX(rn,rm1);
-		*rr2=__SHSAX(rm1,rn);
+		*rr1= - __SHSAX(rn,rm1);
+		*rr2= - __SHSAX(rm1,rn);
 		rna++;
 		rma--;
 		rr1+=2;
 		rr2+=2;
 		//
-		rn = - *rna;
-		rm = - *rma;
+		rn = *rna;
+		rm = *rma;
 		rm1=__ROR(rm,16);
-		*rr1=__SHSAX(rn,rm1);
-		*rr2=__SHSAX(rm1,rn);
+		*rr1= - __SHSAX(rn,rm1);
+		*rr2= - __SHSAX(rm1,rn);
 		rna++;
 		rma--;
 		rr1+=2;
 		rr2+=2;
 	}
+  // final three frequencies
+    int rn,rm,rm1;
+    rn = *rna;
+    rm = *rma;
+    rm1=__ROR(rm,16);
+    *rr1= - __SHSAX(rn,rm1);
+    *rr2= - __SHSAX(rm1,rn);
+    rna++;
+    rma--;
+    rr1+=2;
+    rr2+=2;
+    //
+    rn = *rna;
+    rm = *rma;
+    rm1=__ROR(rm,16);
+    *rr1= - __SHSAX(rn,rm1);
+    *rr2= - __SHSAX(rm1,rn);
+    rna++;
+    rma--;
+    rr1+=2;
+    rr2+=2;
+    //
+    rn = *rna;
+    rm = *rma;
+    rm1=__ROR(rm,16);
+    *rr1= - __SHSAX(rn,rm1);
+    *rr2= - __SHSAX(rm1,rn);
+    rna++;
+    rma--;
+    rr1+=2;
+    rr2+=2;
+   
 	// yy1 is n words long (n/2 complex spectra)
 	// yy2 is n words long (n/2 complex spectra)
 }
