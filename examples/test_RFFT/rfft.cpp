@@ -109,8 +109,6 @@ const arm_cfft_instance_q15 arm_cfft_sR_q15_len256 = {
   256, twiddleCoef_256_q15, armBitRevIndexTable_fixed_256, ARMBITREVINDEXTABLE_FIXED__256_TABLE_LENGTH
 };
 */
-#include "arduino.h"
-#include "usb_serial.h"
 void c_rfft::init(void)
 {
   S_arm_cfft_q15 = (arm_cfft_instance_q15 *) &arm_cfft_sR_q15_len256;
