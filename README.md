@@ -1,6 +1,17 @@
 # wmxzDSP
 Keep here routines that are extracted from CMSIS V5
 
+arm_math.h has been modified to work with teensy 
+
+In particular the following lines where added
+
+#include <stdint.h>
+
+#define ARM_MATH_CM4
+
+#undef __VFP_FP__
+
+
 ## Examples are
 
 ### FilterTest: 
