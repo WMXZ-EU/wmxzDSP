@@ -23,5 +23,5 @@ on T3.6 convolution filter up to 70*128 coefficients are feasable (ca 85% of dyn
 ### AudioReverb:
 integrates the partitioned convolution into audio framework for pjrc audio board 
 [Caveat: to be tested]
-### testRFFT:
+### test_RFFT:
 implements and test dual channel 256 point real to complex FFT 
